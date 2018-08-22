@@ -1,17 +1,17 @@
 <script id="main-template" type="text/ractive">
-    <div id="file-list" class="full third-600 three-960">
-        <fieldset>
-            <label><input type="text" placeholder="Search" on-change="filter" /></label>
-        </fieldset>
+    <div id="side-menu">
+        <input type="text" class="search" placeholder="Search" value={{filter}} />
         <div>
-            <ul>
-                {{#each files}}
-                <li on-click="@.fire('preview', .content)">{{.path}}<br/>{{previewContent(.content)}}</li>
-                {{/each}}
-            </ul>
+            {{#each filtered}}
+            <button class="file-list-item" on-click="['preview', .]">
+                <span class="file-name">{{.path.split('\\').pop().split('/').pop()}}</span>
+                <span class="file-contents">{{.contents.substring(0, 100)}}...</span>
+            </button>
+            {{/each}}
         </div>
     </div>
-    <div id="preview" class="full two-third-600 nine-960">
+    <div id="preview">
+        <div class="item-count">{{itemCount}} items&nbsp;&nbsp;</div>
         {{#if preview}}
         {{{preview}}}
         {{/if}}
