@@ -1,13 +1,15 @@
 //#![windows_subsystem = "windows"]
 
 extern crate glob;
+extern crate pulldown_cmark;
 #[macro_use] extern crate serde_derive;
 extern crate serde_json;
 extern crate web_view;
 
-use web_view::*;
 use glob::glob;
+use pulldown_cmark::{html, Parser};
 use std::fs;
+use web_view::*;
 
 #[derive(Debug, Serialize, Deserialize)]
 struct Document {
@@ -67,7 +69,7 @@ fn main() {
         |webview, arg, _| {
             use Cmd::*;
 
-            println!("Rendering with {:?}", arg);
+            // println!("Rendering with {:?}", arg);
             match serde_json::from_str(arg).unwrap() {
                 init => {
                     println!("WebView finished loading, sending files");
@@ -75,7 +77,8 @@ fn main() {
                     render(webview, docs);
                 },
                 preview { contents } => {
-                    println!("App called for preview, render the following to HTML: {}", contents);
+                    println!("Received preview request");
+                    // println!("App called for preview, render the following to HTML: {}", contents);
                     render_preview(webview, contents);
                 }
             }
@@ -88,7 +91,9 @@ fn render<'a , T>(webview: &mut WebView<'a, T>, docs: Vec<Document>) {
 }
 
 fn render_preview<'a, T>(webview: &mut WebView<'a, T>, contents: String) {
-    webview.eval(&format!("rpc.renderPreview({})", contents));
+    let parsed = parse_markdown(&contents);
+    // println!("Sending formatted doc: {}", parsed);
+    webview.eval(&format!("rpc.renderPreview({})", serde_json::to_string(&parsed).unwrap()));
 }
 
 fn inline_style(s: &str) -> String {
@@ -97,6 +102,13 @@ fn inline_style(s: &str) -> String {
 
 fn inline_script(s: &str) -> String {
     format!(r#"<script type="text/javascript">{}</script>"#, s)
+}
+
+fn parse_markdown(s: &str) -> Document {
+    let parser = Parser::new(s);
+    let mut html_buf = String::new();
+    html::push_html(&mut html_buf, parser);
+    return Document { path: String::new(), contents: html_buf };
 }
 
 fn get_docs() -> Vec<Document> {

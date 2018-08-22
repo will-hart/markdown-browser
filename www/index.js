@@ -3,7 +3,8 @@ var receiveFiles = function(files) {
 }
 
 var setPreview = function(preview) {
-    ractive.set('preview', preview);
+    // alert(preview.contents);
+    ractive.set('preview', preview.contents);
 }
 
 var rpc = {
@@ -16,6 +17,7 @@ var rpc = {
     renderPreview: setPreview,
     requestPreview: function(item) {
         const arg = { cmd: 'preview', contents: item };
+        // alert(arg.contents)
         rpc.invoke(arg)
     },
     init: function() { rpc.invoke({ cmd: 'init' }); }
@@ -44,17 +46,12 @@ var ractive = new Ractive({
 
 ractive.on('preview', function(ctx, item) {
     // alert('previewing: ' + item.contents);
-    rpc.renderPreview(item.contents)
+    rpc.requestPreview(item.contents)
 })
 
 // set up an observer for the file count
 ractive.observe('filtered', function(newVal) {
     ractive.set('itemCount', newVal.length)
 })
-
-function showPreview(item) {
-    alert(item)
-    rpc.requestPreview(item)
-}
 
 window.onload = function() { rpc.init(); };
