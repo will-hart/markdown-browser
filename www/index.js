@@ -2,9 +2,15 @@ var receiveFiles = function(files) {
     ractive.set('files', files);
 }
 
-var setPreview = function(preview) {
+var renderPreview = function(preview) {
     // alert(preview.contents);
     ractive.set('preview', preview.contents);
+    renderMathInElement(document.getElementById("preview"), {
+        delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "$", right: "$", display: false}
+        ]
+    });
 }
 
 var rpc = {
@@ -14,7 +20,7 @@ var rpc = {
         window.external.invoke(toSend);
     },
     render: receiveFiles,
-    renderPreview: setPreview,
+    renderPreview: renderPreview,
     requestPreview: function(item) {
         const arg = { cmd: 'preview', contents: item };
         // alert(arg.contents)
