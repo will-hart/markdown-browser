@@ -1,0 +1,19 @@
+<script id="main-template" type="text/ractive">
+    <div id="file-list" class="full third-600 three-960">
+        <fieldset>
+            <label><input type="text" placeholder="Search" on-change="filter" /></label>
+        </fieldset>
+        <div>
+            <ul>
+                {{#each files}}
+                <li on-click="@.fire('preview', .content)">{{.path}}<br/>{{previewContent(.content)}}</li>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+    <div id="preview" class="full two-third-600 nine-960">
+        {{#if preview}}
+        {{{preview}}}
+        {{/if}}
+    </div>
+</script>
