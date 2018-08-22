@@ -3,7 +3,7 @@ body { background: white; margin: 1em; }
 
 .wrapper { position: fixed; top: 0; bottom: 0; left: 0; right: 0; overflow: hidden; display: flex; }
 #side-menu { background: #EEE; height: 100%; flex: 2; overflow-y: auto; overflow-x: hidden; min-width: 250px; max-width: 400px; }
-#preview { background: white; overflow: auto; flex: 5; height: 100%; box-sizing: border-box; padding: 5em; }
+#preview { background: white; overflow: auto; flex: 5; height: 100%; box-sizing: border-box; padding: 8%; }
 
 .file-list-item { font-size: 0.9em; width: 100%; background: none; border: 0; text-align: left; padding: 1em; }
 .file-list-item:hover { background: #DDD; }
@@ -11,4 +11,9 @@ body { background: white; margin: 1em; }
 .file-name { font-weight: bold; display: block; }
 .file-contents { color: #777; }
 .item-count { font-size: 0.8em; position: absolute; top: 0; right: 0; color: #777; padding: 1em; }
-.search { border: 0; outline: none; box-sizing: border-box; padding: 5% 3%; width: 100%; font-size: 1.1em; background: #DDD; color: #777; }
+.search { border: 0; outline: none; box-sizing: border-box; padding: 5% 3%; width: 100%; font-size: 1.1em; background: #CCC; color: #777; }
+.warning { margin: auto; box-sizing: border-box; width: 90%; padding: 5%; background: rgba(200, 40, 40, 0.3); color: #AA2222; font-size: 0.9em; margin-top: 2em; }
+
+h1 { font-size: 1.3em; }
+h2 { font-size: 1.2em; }
+h3 { font-size: 1.1em; }

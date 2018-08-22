@@ -7,6 +7,11 @@
                 <span class="file-name">{{.path.split('\\').pop().split('/').pop()}}</span>
                 <span class="file-contents">{{.contents.substring(0, 100)}}...</span>
             </button>
+            {{else}}
+            <div class="warning">
+                <p><strong>There are no markdown files in the directory!</strong></p>
+                <p>Please move the application into your markdown file directory and restart!</p>
+            </div>
             {{/each}}
         </div>
     </div>

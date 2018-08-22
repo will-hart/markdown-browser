@@ -114,7 +114,12 @@ fn parse_markdown(s: &str) -> Document {
 fn get_docs() -> Vec<Document> {
     let mut docs: Vec<Document> = vec![];
 
-    for path in glob(r#"D:\Drive\PhD\Notes\009 Annotated Bibliography\*.md"#).expect("Failed to read glob pattern for files") {
+    let mut root = "./*.md";
+    if cfg!(debug_assertions) {
+        root = r#"D:\Drive\PhD\Notes\009 Annotated Bibliography\*.md"#;
+    }
+
+    for path in glob(root).expect("Failed to read glob pattern for files") {
         match path {
             Ok(path) => docs.push(Document {
                 path: path.as_path().as_os_str().to_str().unwrap().to_string(),
