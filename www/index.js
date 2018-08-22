@@ -11,6 +11,7 @@ var renderPreview = function(preview) {
             {left: "$", right: "$", display: false}
         ]
     });
+    mark.mark(ractive.get('filter'))
 }
 
 var rpc = {
@@ -58,6 +59,13 @@ ractive.on('preview', function(ctx, item) {
 // set up an observer for the file count
 ractive.observe('filtered', function(newVal) {
     ractive.set('itemCount', newVal.length)
+})
+
+// set up marking the filter text
+var mark = new Mark(document.getElementById("preview"))
+ractive.observe('filter', function(newVal) {
+    mark.unmark();
+    mark.mark(newVal);
 })
 
 window.onload = function() { rpc.init(); };
