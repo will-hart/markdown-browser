@@ -1,0 +1,17 @@
+[package]
+name = "rs-markdown-browser"
+description = "Markdown Browser"
+version = "0.1.0"
+authors = ["Will Hart <hart.wl@gmail.com>"]
+
+[dependencies]
+web-view = "0.2.1"
+
+[package.metadata.bundle]
+name = "Markdown Browser"
+identifier = "io.willhart.markdownbrowser"
+version = "0.1.0"
+resources = []
+copyright = "Copyright (c) William Hart 2018. All rights reserved."
+short_description = "Markdown Browser"
+long_description = "Markdown Browser"
