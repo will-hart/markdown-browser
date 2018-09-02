@@ -8,6 +8,8 @@ in a `web-view`. You can filter from the titles or contents of the files.
 
 It is working, but I wouldn't rely on it for anything critical!
 
+![Screenshot](screenshot.png)
+
 ## BUILDING
 
 I'm not planning to provide any binaries. To build it you need rust/cargo and run
