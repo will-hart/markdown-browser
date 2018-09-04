@@ -25,3 +25,7 @@ blockquote { background: #EEE; border-left: 4px solid #777; margin: 0; padding: 
 .item-count { font-size: 0.8em; position: absolute; top: 0; right: 0; color: #777; padding: 1em; }
 .search { border: 0; outline: none; box-sizing: border-box; padding: 5% 3%; width: 100%; font-size: 1.1em; background: #CCC; color: #777; }
 .warning { margin: auto; box-sizing: border-box; width: 90%; padding: 5%; background: rgba(200, 40, 40, 0.3); color: #AA2222; font-size: 0.9em; margin-top: 2em; }
+
+.footnote-definition-label { float:left; padding-right: 1em; font-size: 0.8em; }
+.footnote-definition-label:before { content: '['; }
+.footnote-definition-label:after { content: ']:'; }

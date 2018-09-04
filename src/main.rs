@@ -99,7 +99,7 @@ fn render<'a , T>(webview: &mut WebView<'a, T>, docs: Vec<Document>) {
 
 fn render_preview<'a, T>(webview: &mut WebView<'a, T>, contents: String) {
     let parsed = parse_markdown(&contents);
-    // println!("Sending formatted doc: {}", parsed);
+    // println!("Sending formatted doc: {}", parsed.contents);
     webview.eval(&format!("rpc.renderPreview({})", serde_json::to_string(&parsed).unwrap()));
 }
 
