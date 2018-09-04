@@ -7,7 +7,7 @@ extern crate serde_json;
 extern crate web_view;
 
 use glob::glob;
-use pulldown_cmark::{html, Parser};
+use pulldown_cmark::{html, OPTION_ENABLE_FOOTNOTES, OPTION_ENABLE_TABLES, Parser};
 use std::fs;
 use web_view::*;
 
@@ -109,7 +109,7 @@ fn inline_script(s: &str) -> String {
 }
 
 fn parse_markdown(s: &str) -> Document {
-    let parser = Parser::new(s);
+    let parser = Parser::new_ext(s, OPTION_ENABLE_FOOTNOTES | OPTION_ENABLE_TABLES);
     let mut html_buf = String::new();
     html::push_html(&mut html_buf, parser);
     return Document { path: String::new(), contents: html_buf };
