@@ -43,9 +43,10 @@ var ractive = new Ractive({
         filtered: function() {
             var filter = this.get('filter')
             if (filter === 'undefined' || filter === null || filter.length === 0) return this.get('files')
+
+            var re = new RegExp(filter, 'mi')
             return this.get('files').filter(function(item) {
-                if (item.path.indexOf(filter) !== -1) return true
-                return item.contents.indexOf(filter) >= 0
+                return re.test(item.path) || re.test(item.contents)
             })
         }
     }
