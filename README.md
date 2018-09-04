@@ -16,9 +16,12 @@ I'm not planning to provide any binaries. To build it you need rust/cargo and ru
 
     cargo build --release
 
-**NOTE** If you omit the release flag it will try to load from a random location where I store my Markdown files.
-Later on I may allow setting the browser directory using a config file, but that's not going to happen
-any time soon!
+## RUNNING
+
+Find the application and either:
+
+1) Drop it in the directory where your markdown files are stored, or
+2) Drop it somewhere else and include a file `folder.txt` in the same directory. This file should contain a single line which is the path to the root folder for your markdown files.
 
 ## LICENSE
 

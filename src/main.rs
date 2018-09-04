@@ -8,7 +8,10 @@ extern crate web_view;
 
 use glob::glob;
 use pulldown_cmark::{html, OPTION_ENABLE_FOOTNOTES, OPTION_ENABLE_TABLES, Parser};
+use std::env;
 use std::fs;
+use std::io;
+use std::path::Path;
 use web_view::*;
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -115,15 +118,34 @@ fn parse_markdown(s: &str) -> Document {
     return Document { path: String::new(), contents: html_buf };
 }
 
-fn get_docs() -> Vec<Document> {
-    let mut docs: Vec<Document> = vec![];
+fn get_folder_path() -> io::Result<String> {
+    let app_dir = env::current_dir();
+    let app_dir = match app_dir {
+        Result::Ok(s) => format!("{}", s.as_os_str().to_str().unwrap()),
+        Result::Err(_) => format!("{}", "./*.md"),
+    };
 
-    let mut root = "./*.md";
-    if cfg!(debug_assertions) {
-        root = r#"D:\Drive\PhD\Notes\009 Annotated Bibliography\*.md"#;
+    let folder_config = format!("{}\\folder.txt", app_dir);
+
+    if Path::new(&folder_config).exists() {
+        println!("Path {} exists, reading", folder_config);
+        let result = fs::read_to_string(folder_config);
+        return match result {
+            Result::Err(_) => Ok(format!("{}", "./*.md")),
+            Result::Ok(s) => Ok(format!("{}", s)),
+        };
     }
 
-    for path in glob(root).expect("Failed to read glob pattern for files") {
+    return Ok(format!("{}", "./*.md"));
+}
+
+fn get_docs() -> Vec<Document> {
+    let mut docs: Vec<Document> = vec![];
+    let root = get_folder_path().unwrap();
+
+    println!("Reading files at {}", root);
+
+    for path in glob(&root).expect("Failed to read glob pattern for files") {
         match path {
             Ok(path) => docs.push(Document {
                 path: path.as_path().as_os_str().to_str().unwrap().to_string(),
