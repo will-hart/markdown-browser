@@ -14,6 +14,11 @@ var renderPreview = function(preview) {
     mark.mark(ractive.get('filter'))
 }
 
+//https://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
+var escapeRegExp = function(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 var rpc = {
     invoke: function(arg) {
         var toSend = JSON.stringify(arg);
@@ -44,7 +49,7 @@ var ractive = new Ractive({
             var filter = this.get('filter')
             if (filter === 'undefined' || filter === null || filter.length === 0) return this.get('files')
 
-            var re = new RegExp(filter, 'mi')
+            var re = new RegExp(escapeRegExp(filter), 'mi')
             return this.get('files').filter(function(item) {
                 return re.test(item.path) || re.test(item.contents)
             })
