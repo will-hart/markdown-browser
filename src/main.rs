@@ -1,4 +1,4 @@
-#![windows_subsystem = "windows"]
+// #![windows_subsystem = "windows"]
 
 extern crate glob;
 extern crate pulldown_cmark;
@@ -59,48 +59,50 @@ fn main() {
     // fs::write("./test.html", &html).unwrap();
     // println!("{}", html);
 
-    let size = (800, 600);
-    let resizable = true;
-    let debug = true;
-
-    let init_cb = |_: MyUnique<WebView<Vec<Document>>>| ();
-
-    let userdata = vec![];
-
-    run("Markdown Viewer",
-        Content::Html(html),
-        Some(size),
-        resizable,
-        debug,
-        init_cb,
-        |webview, arg, _| {
+    let mut webview = web_view::builder()
+        .title("Markdown Viewer")
+        .content(Content::Html(html))
+        .size(800, 600)
+        .resizable(true)
+        .debug(true)
+        .user_data(vec![])
+        .invoke_handler(|webview, arg| {
             use Cmd::*;
 
-            // println!("Rendering with {:?}", arg);
             match serde_json::from_str(arg).unwrap() {
-                init => {
-                    println!("WebView finished loading, sending files");
+                Init => {
+                    println!("INIT");
                     let docs = get_docs();
-                    render(webview, docs);
+                    render(webview, docs)
                 },
-                preview { contents } => {
-                    println!("Received preview request");
-                    // println!("App called for preview, render the following to HTML: {}", contents);
-                    render_preview(webview, contents);
-                }
+                Preview { contents } => {
+                    println!("PREVIEW");
+                    render_preview(webview, contents)
+                },
             }
-        }, userdata);
+        })
+        .build()
+        .unwrap()
+        .run()
+        .unwrap();
 }
 
-fn render<'a , T>(webview: &mut WebView<'a, T>, docs: Vec<Document>) {
-    // println!("Rendering with {:?}", docs);
-    webview.eval(&format!("rpc.render({})", serde_json::to_string(&docs).unwrap()));
+fn render(webview: &mut WebView<Vec<Document>>, docs: Vec<Document>) -> WVResult {
+    let render_tasks = {
+        format!("rpc.render({})", serde_json::to_string(&docs).unwrap())
+    };
+
+    webview.eval(&render_tasks)
 }
 
-fn render_preview<'a, T>(webview: &mut WebView<'a, T>, contents: String) {
-    let parsed = parse_markdown(&contents);
-    // println!("Sending formatted doc: {}", parsed.contents);
-    webview.eval(&format!("rpc.renderPreview({})", serde_json::to_string(&parsed).unwrap()));
+fn render_preview(webview: &mut WebView<Vec<Document>>, contents: String) -> WVResult {
+    let render_tasks = {
+        let parsed = parse_markdown(&contents);
+        println!("Sending formatted doc: {}", parsed.contents);
+        format!("rpc.renderPreview({})", serde_json::to_string(&parsed).unwrap())
+    };
+
+    webview.eval(&render_tasks)
 }
 
 fn inline_style(s: &str) -> String {
@@ -164,8 +166,8 @@ fn get_docs() -> Vec<Document> {
 
 #[allow(non_camel_case_types)]
 #[derive(Debug, Deserialize)]
-#[serde(tag = "cmd")]
+#[serde(tag = "cmd", rename_all = "camelCase")]
 pub enum Cmd {
-    init,
-    preview { contents: String }
+    Init,
+    Preview { contents: String }
 }
