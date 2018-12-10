@@ -1,4 +1,4 @@
-// #![windows_subsystem = "windows"]
+#![windows_subsystem = "windows"]
 
 extern crate glob;
 extern crate pulldown_cmark;
@@ -59,7 +59,7 @@ fn main() {
     // fs::write("./test.html", &html).unwrap();
     // println!("{}", html);
 
-    let mut webview = web_view::builder()
+    web_view::builder()
         .title("Markdown Viewer")
         .content(Content::Html(html))
         .size(800, 600)
