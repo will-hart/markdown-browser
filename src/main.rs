@@ -46,8 +46,8 @@ fn main() {
                 {scripts}
                 <!--[endif]-->
 
-                <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc/dist/katex.min.js" integrity="sha384-ttOZCNX+557qK00I95MHw9tttcgWn2PjR/bXecuEvENq6nevFtwSSQ6bYEN6AetB" crossorigin="anonymous"></script>
-                <script defer src="https://cdn.jsdelivr.net/npm/katex@0.10.0-rc/dist/contrib/auto-render.min.js" integrity="sha384-yACMu8JWxKzSp/C1YV86pzGiQ/l1YUfE8oPuahJQxzehAjEt2GiQuy/BIvl9KyeF" crossorigin="anonymous"></script>
+                <script src="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/katex.min.js" integrity="sha256-q01RVaHUJiYq9aq0FwkI6GAmMtOmRgToK8aEHHm4Xl8=" crossorigin="anonymous"></script>
+                <script src="https://cdn.jsdelivr.net/npm/katex@0.10.0/dist/contrib/auto-render.min.js" integrity="sha256-CiPSQ9n316ms9u5yYJ092wI+FeybXvesfbnOUvSRvYA=" crossorigin="anonymous"></script>
             </body>
         </html>
         "#,
